@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">vacationplanner</string>
+
+
+    <string name="title_vacation_places">Vacation Places</string>
+
+    <string name="error_general">Oops something bad happens!</string>
+
 </resources>

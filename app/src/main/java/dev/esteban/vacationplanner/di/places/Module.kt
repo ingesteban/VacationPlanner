@@ -6,6 +6,7 @@ import dev.esteban.places.domain.repository.PlaceRepository
 import dev.esteban.places.domain.usecase.VacationPlacesUseCase
 import dev.esteban.places.data.repository.PlaceRepositoryImpl
 import kotlinx.coroutines.Dispatchers
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
@@ -47,5 +48,5 @@ val roomModule: Module = module {
 }
 
 val dataSourceModule: Module = module {
-    singleOf(::PlaceLocalDataSource)
+    single { PlaceLocalDataSource(context = get()) }
 }

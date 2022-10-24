@@ -21,9 +21,17 @@ val h2Typography: TextStyle = TextStyle(
     color = Color.Gray
 )
 
+val h3Typography: TextStyle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontSize = 22.sp,
+    fontWeight = FontWeight.Bold,
+    color = Color.White
+)
+
 data class VacationPlannerTypography(
     val h1: TextStyle = h1Typography,
-    val h2: TextStyle = h2Typography
+    val h2: TextStyle = h2Typography,
+    val h3: TextStyle = h3Typography
 )
 
 internal val LocalVacationPlannerTypography =

@@ -7,66 +7,87 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import dev.esteban.common.utils.ScreenState
+import dev.esteban.places.domain.model.PlaceModel
 import dev.esteban.vacationplanner.ui.theme.VacationPlannerTheme
+import dev.esteban.vacationplanner.viewmodel.VacationsViewModel
+import org.koin.androidx.compose.getViewModel
+import dev.esteban.vacationplanner.R
+import dev.esteban.vacationplanner.commons.LoadingItem
+import dev.esteban.vacationplanner.commons.Error
 
 @Composable
-fun VacationListScreen() {
+fun VacationListScreen(
+    vacationsViewModel: VacationsViewModel = getViewModel()
+) {
+    LaunchedEffect(true) {
+        vacationsViewModel.getVacationPlaces()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 elevation = 4.dp,
                 title = {
-                    Text("Vacation Activities")
+                    Text(
+                        text = stringResource(id = R.string.title_vacation_places),
+                        style = VacationPlannerTheme.typography.h3,
+                    )
                 },
                 backgroundColor = MaterialTheme.colors.primary,
             )
         }
     ) {
-        LazyColumn {
-            item {
-                VacationItem(
-                    title = "Cloud Gate",
-                    description = "Cloud Gate is a public sculpture by Indian-born British artist Sir Anish Kapoor"
-                )
+        val uiState = vacationsViewModel.uiState
+        when {
+            uiState.screenState == ScreenState.Loading -> LoadingItem()
+            uiState.screenState == ScreenState.Success -> uiState.places?.let { places ->
+                PlacesList(places)
             }
+            else -> Error(
+                show = uiState.screenState == ScreenState.Error,
+                message = stringResource(id = R.string.error_general)
+            )
+        }
+
+    }
+}
+
+@Composable
+fun PlacesList(
+    places: List<PlaceModel>,
+    onPlaceClick: (place: PlaceModel) -> Unit = {}
+) {
+    LazyColumn {
+        places.forEach { place ->
             item {
-                VacationItem(
-                    title = "Mount Wilson Observatory",
-                    description = "The Mount Wilson Observatory (MWO) is an astronomical observatory in Los Angeles County, California"
-                )
-            }
-            item {
-                VacationItem(
-                    title = "Jamestown",
-                    description = "Capital of the British Overseas Territory of Saint Helena, Ascension and Tristan da Cunha."
-                )
-            }
-            item {
-                VacationItem(
-                    title = "Mount Kenya",
-                    description = "Mount Kenya is the highest mountain in Kenya and the second-highest in Africa, after Kilimanjaro."
-                )
+                PlaceItem(place) { place ->
+                    onPlaceClick(place)
+                }
             }
         }
     }
 }
 
 @Composable
-fun VacationItem(
-    title: String,
-    description: String,
-    onVacationClick: () -> Unit = {}
+fun PlaceItem(
+    place: PlaceModel,
+    onPlaceClick: (place: PlaceModel) -> Unit = {}
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable(onClick = onVacationClick),
+            .clickable {
+                onPlaceClick(place)
+            },
         elevation = 10.dp
     ) {
         Box(
@@ -78,11 +99,11 @@ fun VacationItem(
                     .padding(end = 24.dp)
             ) {
                 Text(
-                    text = title,
+                    text = place.label,
                     style = VacationPlannerTheme.typography.h1,
                 )
                 Text(
-                    text = description,
+                    text = place.description,
                     style = VacationPlannerTheme.typography.h2,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
