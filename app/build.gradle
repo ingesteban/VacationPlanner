@@ -55,6 +55,10 @@ dependencies {
     implementation rootProject.ext.libs.composematerialicons
     implementation rootProject.ext.libs.navigationcompose
 
+    implementation rootProject.ext.libs.koincore
+    implementation rootProject.ext.libs.koinandroid
+    implementation rootProject.ext.libs.koincompose
+
     testImplementation rootProject.ext.test.junit
     androidTestImplementation rootProject.ext.test.extJunit
     androidTestImplementation rootProject.ext.test.espresso
