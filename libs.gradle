@@ -75,6 +75,7 @@ ext {
     ]
 
     modules = [
-            'places': ":places"
+            'places': ":places",
+            'common': ":common"
     ]
 }

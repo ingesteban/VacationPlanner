@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "vacationplanner"
 include ':app'
 include ':places'
+include ':common'
