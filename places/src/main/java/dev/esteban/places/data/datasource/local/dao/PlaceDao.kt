@@ -14,4 +14,9 @@ interface PlaceDao {
 
     @Query("Select * from Place")
     suspend fun getAllPlaces(): List<PlaceEntity>
+
+    @Query("Update Place SET visited=:visited WHERE id=:id")
+    suspend fun updatePlaceVisited(
+        id: Long, visited: Boolean
+    )
 }

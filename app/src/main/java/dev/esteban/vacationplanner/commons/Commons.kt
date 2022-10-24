@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import dev.esteban.common.utils.ScreenState
 
 const val TAG = "commons"
 const val PROGRESS_BAR_TAG = "ProgressBarItem"
@@ -21,7 +22,7 @@ const val DISMISS_SNACK_BAR = "Snack bar dismiss"
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun Error(
+fun SnackBarMessage(
     message: String,
     modifier: Modifier = Modifier,
     show: Boolean = false,
@@ -29,15 +30,14 @@ fun Error(
     onClickAction: () -> Unit = {}
 ) {
     if (show) {
-        val snackbarHostState = remember { SnackbarHostState() }
-
+        val snackBarHostState = remember { SnackbarHostState() }
         Box(
             modifier
                 .fillMaxSize()
                 .semantics { contentDescription = "error" }
         ) {
             LaunchedEffect(Unit) {
-                val result = snackbarHostState.showSnackbar(
+                val result = snackBarHostState.showSnackbar(
                     message = message,
                     actionLabel = actionLabel
                 )
@@ -47,7 +47,7 @@ fun Error(
                 }
             }
             SnackbarHost(
-                hostState = snackbarHostState,
+                hostState = snackBarHostState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
             )

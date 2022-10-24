@@ -24,5 +24,11 @@ class PlaceRepositoryImpl(
     } catch (e: Exception) {
         throw e
     }
+
+    override suspend fun updatePlaceVisited(id: Long, visited: Boolean) = try {
+        placeDao.updatePlaceVisited(id = id, visited = visited)
+    } catch (e: Exception) {
+        throw e
+    }
 }
 
