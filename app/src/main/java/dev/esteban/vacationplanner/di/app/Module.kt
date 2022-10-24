@@ -5,6 +5,7 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import dev.esteban.vacationplanner.viewmodel.VacationsViewModel
+import dev.esteban.vacationplanner.viewmodel.UpdatePlaceViewModel
 import org.koin.core.context.loadKoinModules
 
 fun injectFeatures() {
@@ -24,4 +25,5 @@ private val loadFeature by lazy {
 
 val viewModelModule: Module = module {
     viewModelOf(::VacationsViewModel)
+    viewModelOf(::UpdatePlaceViewModel)
 }

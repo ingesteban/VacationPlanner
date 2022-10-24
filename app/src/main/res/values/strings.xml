@@ -5,6 +5,7 @@
     <string name="title_vacation_places">Vacation Places</string>
 
     <string name="error_general">Oops something bad happens!</string>
+    <string name="place_updated_success">The place was updated successful!</string>
 
     <string name="label_have_you_visited_this_place">Have you visited this place ?</string>
 

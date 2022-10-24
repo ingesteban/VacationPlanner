@@ -21,7 +21,7 @@ import dev.esteban.vacationplanner.viewmodel.VacationsViewModel
 import org.koin.androidx.compose.getViewModel
 import dev.esteban.vacationplanner.R
 import dev.esteban.vacationplanner.commons.LoadingItem
-import dev.esteban.vacationplanner.commons.Error
+import dev.esteban.vacationplanner.commons.SnackBarMessage
 
 @Composable
 fun VacationListScreen(
@@ -47,7 +47,6 @@ fun VacationListScreen(
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-
             val uiState = vacationsViewModel.uiState
             when {
                 uiState.screenState == ScreenState.Loading -> LoadingItem()
@@ -56,7 +55,7 @@ fun VacationListScreen(
                         navigateToPlace(place)
                     }
                 }
-                else -> Error(
+                else -> SnackBarMessage(
                     show = uiState.screenState == ScreenState.Error,
                     message = stringResource(id = R.string.error_general)
                 )
