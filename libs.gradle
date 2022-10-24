@@ -19,6 +19,8 @@ ext {
                     'runtimektx'       : "2.5.1",
                     'navigationcompose': "2.5.1",
                     'composeui'        : "1.2.1",
+                    'gson'             : "2.9.1",
+                    'room'             : "2.4.3",
             ],
             'test'          : [
                     'junit'    : "4.13.2",
@@ -38,10 +40,13 @@ ext {
             'composematerial'     : "androidx.compose.material:material:${versions.libs.composeui}",
             'composeuipreview'    : "androidx.compose.ui:ui-tooling-preview:${versions.libs.composeui}",
             'composematerialicons': "androidx.compose.material:material-icons-extended:${versions.libs.composeui}",
-
             'koincore'            : "io.insert-koin:koin-core:${versions.koin}",
             'koinandroid'         : "io.insert-koin:koin-android:${versions.koin}",
             'koincompose'         : "io.insert-koin:koin-androidx-compose:${versions.koin}",
+            'gson'                : "com.google.code.gson:gson:${versions.libs.gson}",
+            'roomktx'             : "androidx.room:room-ktx:${versions.libs.room}",
+            'roomtesting'         : "androidx.room:room-testing:${versions.libs.room}",
+            'roomcompiler'        : "androidx.room:room-compiler:${versions.libs.room}",
     ]
     main = [
             'androidplugin': "com.android.tools.build:gradle:${versions.androidplugin}",
@@ -57,13 +62,16 @@ ext {
             'composejunit'   : "androidx.compose.ui:ui-test-junit4:${versions.test.composeui}",
             'composetooling' : "androidx.compose.ui:ui-tooling:${versions.test.composeui}",
             'composemanifest': "androidx.compose.ui:ui-test-manifest:${versions.test.composeui}",
+            'junitrunner'    : "androidx.test.runner.AndroidJUnitRunner",
+            'consumerrules'  : "consumer-rules.pr",
     ]
 
     plugins = [
-            'application': "com.android.application",
-            'kotlin'     : "kotlin-android",
-            'library'    : "com.android.library",
-            'kapt'       : 'kotlin-kapt',
+            'application'  : "com.android.application",
+            'kotlin'       : "kotlin-android",
+            'library'      : "com.android.library",
+            'kotlinandroid': "org.jetbrains.kotlin.android",
+            'kapt'         : 'kotlin-kapt',
     ]
 
     modules = [

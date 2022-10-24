@@ -1,0 +1,40 @@
+apply plugin: rootProject.ext.plugins.library
+apply plugin: rootProject.ext.plugins.kotlinandroid
+apply plugin: rootProject.ext.plugins.kapt
+
+android {
+    compileSdk rootProject.ext.app.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.app.minSdk
+        targetSdk rootProject.ext.app.targetSdkVersion
+
+        testInstrumentationRunner rootProject.ext.test.junitrunner
+        consumerProguardFiles rootProject.ext.test.consumerrules
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    implementation rootProject.ext.libs.ktx
+    implementation rootProject.ext.libs.gson
+
+    implementation rootProject.ext.libs.roomktx
+    kapt rootProject.ext.libs.roomcompiler
+
+    testImplementation rootProject.ext.test.junit
+    androidTestImplementation rootProject.ext.test.extJunit
+}

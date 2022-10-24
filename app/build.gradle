@@ -1,5 +1,6 @@
 apply plugin: rootProject.ext.plugins.application
 apply plugin: rootProject.ext.plugins.kotlin
+apply plugin: rootProject.ext.plugins.kapt
 
 android {
     compileSdkVersion rootProject.ext.app.compileSdkVersion
@@ -45,6 +46,9 @@ android {
 
 dependencies {
 
+    // modules
+    implementation project(rootProject.ext.modules.places)
+
     implementation rootProject.ext.libs.ktx
 
     implementation rootProject.ext.libs.composeui
@@ -58,6 +62,9 @@ dependencies {
     implementation rootProject.ext.libs.koincore
     implementation rootProject.ext.libs.koinandroid
     implementation rootProject.ext.libs.koincompose
+
+    implementation rootProject.ext.libs.roomktx
+    kapt rootProject.ext.libs.roomcompiler
 
     testImplementation rootProject.ext.test.junit
     androidTestImplementation rootProject.ext.test.extJunit
