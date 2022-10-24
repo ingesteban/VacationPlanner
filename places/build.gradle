@@ -1,6 +1,7 @@
 apply plugin: rootProject.ext.plugins.library
 apply plugin: rootProject.ext.plugins.kotlinandroid
 apply plugin: rootProject.ext.plugins.kapt
+apply plugin: rootProject.ext.plugins.parcelize
 
 android {
     compileSdk rootProject.ext.app.compileSdkVersion

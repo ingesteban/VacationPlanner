@@ -67,6 +67,8 @@ dependencies {
     implementation rootProject.ext.libs.roomktx
     kapt rootProject.ext.libs.roomcompiler
 
+    implementation rootProject.ext.libs.gson
+
     testImplementation rootProject.ext.test.junit
     androidTestImplementation rootProject.ext.test.extJunit
     androidTestImplementation rootProject.ext.test.espresso

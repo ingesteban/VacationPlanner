@@ -71,7 +71,8 @@ ext {
             'kotlin'       : "kotlin-android",
             'library'      : "com.android.library",
             'kotlinandroid': "org.jetbrains.kotlin.android",
-            'kapt'         : 'kotlin-kapt',
+            'kapt'         : "kotlin-kapt",
+            'parcelize'    : "kotlin-parcelize",
     ]
 
     modules = [

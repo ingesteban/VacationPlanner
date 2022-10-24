@@ -25,7 +25,8 @@ import dev.esteban.vacationplanner.commons.Error
 
 @Composable
 fun VacationListScreen(
-    vacationsViewModel: VacationsViewModel = getViewModel()
+    vacationsViewModel: VacationsViewModel = getViewModel(),
+    navigateToPlace: (place: PlaceModel) -> Unit = {}
 ) {
     LaunchedEffect(true) {
         vacationsViewModel.getVacationPlaces()
@@ -45,18 +46,35 @@ fun VacationListScreen(
             )
         }
     ) {
-        val uiState = vacationsViewModel.uiState
-        when {
-            uiState.screenState == ScreenState.Loading -> LoadingItem()
-            uiState.screenState == ScreenState.Success -> uiState.places?.let { places ->
-                PlacesList(places)
-            }
-            else -> Error(
-                show = uiState.screenState == ScreenState.Error,
-                message = stringResource(id = R.string.error_general)
-            )
-        }
+        Box(modifier = Modifier.fillMaxSize()) {
 
+            val uiState = vacationsViewModel.uiState
+            when {
+                uiState.screenState == ScreenState.Loading -> LoadingItem()
+                uiState.screenState == ScreenState.Success -> uiState.places?.let { places ->
+                    PlacesList(places) { place ->
+                        navigateToPlace(place)
+                    }
+                }
+                else -> Error(
+                    show = uiState.screenState == ScreenState.Error,
+                    message = stringResource(id = R.string.error_general)
+                )
+            }
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                onClick = { /*do something*/ }) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null,
+                    tint = Color.White
+                )
+            }
+
+        }
     }
 }
 
@@ -65,7 +83,9 @@ fun PlacesList(
     places: List<PlaceModel>,
     onPlaceClick: (place: PlaceModel) -> Unit = {}
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
         places.forEach { place ->
             item {
                 PlaceItem(place) { place ->
