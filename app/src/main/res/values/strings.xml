@@ -6,4 +6,6 @@
 
     <string name="error_general">Oops something bad happens!</string>
 
+    <string name="label_have_you_visited_this_place">Have you visited this place ?</string>
+
 </resources>

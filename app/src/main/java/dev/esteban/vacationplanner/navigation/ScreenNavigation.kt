@@ -5,13 +5,15 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDeepLink
+import dev.esteban.vacationplanner.views.vacationdetails.VacationDetailsNavigation
 import dev.esteban.vacationplanner.views.vacationlist.VacationListNavigation
 
 interface ScreenNavigation {
 
     companion object {
-        val allScreens = listOf<ScreenNavigation>(
-            VacationListNavigation
+        val allScreens = listOf(
+            VacationListNavigation,
+            VacationDetailsNavigation
         )
     }
 
@@ -20,8 +22,6 @@ interface ScreenNavigation {
     val route: String
 
     val arguments: List<NamedNavArgument> get() = emptyList()
-
-    val deepLinks: List<NavDeepLink> get() = emptyList()
 
     @Composable
     fun Content(
