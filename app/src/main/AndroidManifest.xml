@@ -4,6 +4,7 @@
     package="dev.esteban.vacationplanner">
 
     <application
+        android:name="dev.esteban.vacationplanner.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
