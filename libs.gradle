@@ -1,0 +1,67 @@
+ext {
+    app = [
+            'id'               : "dev.esteban.vacationplanner",
+            'targetSdkVersion' : 32,
+            'versionCode'      : 1,
+            'minSdk'           : 21,
+            'compileSdkVersion': 32,
+            'versionName'      : "1.0",
+    ]
+
+    versions = [
+            'androidplugin' : '7.0.3',
+            'kotlin'        : "1.5.30",
+            'kotlincompiler': "1.3.2",
+            'libs'          : [
+                    'ktx'              : "1.8.0",
+                    'activitycompose'  : "1.5.1",
+                    'runtimektx'       : "2.5.1",
+                    'navigationcompose': "2.5.1",
+                    'composeui'        : "1.2.1",
+            ],
+            'test'          : [
+                    'junit'    : "4.13.2",
+                    'extJunit' : "1.1.3",
+                    'espresso' : "3.4.0",
+                    'composeui': "1.2.1",
+            ]
+    ]
+
+
+    libs = [
+            'ktx'                 : "androidx.core:core-ktx:${versions.libs.ktx}",
+            'activitycompose'     : "androidx.activity:activity-compose:${versions.libs.activitycompose}",
+            'runtimektx'          : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.libs.runtimektx}",
+            'navigationcompose'   : "androidx.navigation:navigation-compose:${versions.libs.navigationcompose}",
+            'composeui'           : "androidx.compose.ui:ui:${versions.libs.composeui}",
+            'composematerial'     : "androidx.compose.material:material:${versions.libs.composeui}",
+            'composeuipreview'    : "androidx.compose.ui:ui-tooling-preview:${versions.libs.composeui}",
+            'composematerialicons': "androidx.compose.material:material-icons-extended:${versions.libs.composeui}",
+    ]
+    main = [
+            'androidplugin': "com.android.tools.build:gradle:${versions.androidplugin}",
+            'kotlinplugin' : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+            'koinplugin'   : "io.insert-koin:koin-gradle-plugin:${versions.libs.koin}",
+            'navigation'   : "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.libs.nav}",
+    ]
+
+    test = [
+            'junit'          : "junit:junit:${versions.test.junit}",
+            'extJunit'       : "androidx.test.ext:junit:${versions.test.extJunit}",
+            'espresso'       : "androidx.test.espresso:espresso-core:${versions.test.espresso}",
+            'composejunit'   : "androidx.compose.ui:ui-test-junit4:${versions.test.composeui}",
+            'composetooling' : "androidx.compose.ui:ui-tooling:${versions.test.composeui}",
+            'composemanifest': "androidx.compose.ui:ui-test-manifest:${versions.test.composeui}",
+    ]
+
+    plugins = [
+            'application': "com.android.application",
+            'kotlin'     : "kotlin-android",
+            'library'    : "com.android.library",
+            'kapt'       : 'kotlin-kapt',
+    ]
+
+    modules = [
+            'places': ":places"
+    ]
+}
