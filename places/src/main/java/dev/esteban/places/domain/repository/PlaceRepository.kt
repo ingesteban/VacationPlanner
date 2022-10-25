@@ -4,5 +4,6 @@ import dev.esteban.places.domain.model.PlaceModel
 
 interface PlaceRepository {
     suspend fun getVacationPlaces(): List<PlaceModel>
-    suspend fun updatePlaceVisited(id: Long, visited: Boolean): Unit
+    suspend fun updatePlaceVisited(id: Long, visited: Boolean)
+    suspend fun deletePlace(id: Long)
 }

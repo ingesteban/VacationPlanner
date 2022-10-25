@@ -11,6 +11,8 @@ import dev.esteban.common.utils.ScreenState
 import dev.esteban.common.utils.exceptionUnknown
 import dev.esteban.places.domain.model.PlaceModel
 import dev.esteban.places.domain.usecase.VacationPlacesUseCase
+import kotlinx.coroutines.CompletableJob
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -30,8 +32,11 @@ class VacationsViewModel(
     var uiState by mutableStateOf(VacationsUiState(screenState = ScreenState.Empty))
         private set
 
+    // private var job: Job? = null
+
     fun getVacationPlaces() {
-        viewModelScope.launch {
+        //job?.cancel()
+            viewModelScope.launch {
             uiState = uiState.copy(screenState = ScreenState.Loading)
             when (val result = vacationPlacesUseCase(Unit)) {
                 is Result.Success -> handleVacationPlacesSuccess(result.data)

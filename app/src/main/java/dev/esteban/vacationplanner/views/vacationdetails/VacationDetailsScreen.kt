@@ -22,12 +22,12 @@ import dev.esteban.vacationplanner.R
 import dev.esteban.vacationplanner.commons.CheckBoxLabel
 import dev.esteban.vacationplanner.commons.DefaultButton
 import dev.esteban.vacationplanner.commons.SnackBarMessage
-import dev.esteban.vacationplanner.viewmodel.UpdatePlaceViewModel
+import dev.esteban.vacationplanner.viewmodel.VacationDetailViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun VacationDetailsScreen(
-    updatePlaceViewModel: UpdatePlaceViewModel = getViewModel(),
+    vacationDetailViewModel: VacationDetailViewModel = getViewModel(),
     placeModel: PlaceModel,
     back: () -> Unit = {}
 ) {
@@ -62,25 +62,30 @@ fun VacationDetailsScreen(
             backgroundColor = MaterialTheme.colors.primary,
         )
     }) {
-        val uiState = updatePlaceViewModel.uiState
+        val uiState = vacationDetailViewModel.uiState
         if (uiState.screenState == ScreenState.Success || uiState.screenState == ScreenState.Error) {
-            val message = if (uiState.placeWasUpdated) {
-                R.string.place_updated_success
-            } else {
-                visitedState.value = !visitedState.value
-                R.string.error_general
+            if (uiState.showMessage) {
+                val message = if (uiState.placeWasUpdated) {
+                    R.string.place_updated_success
+                } else {
+                    visitedState.value = !visitedState.value
+                    R.string.error_general
+                }
+                SnackBarMessage(show = true, message = stringResource(id = message)) {
+                    vacationDetailViewModel.resetStates()
+                }
             }
-
-            SnackBarMessage(
-                show = uiState.showMessage, message = stringResource(id = message)
-            )
+            if (uiState.deletePlace) {
+                back()
+                vacationDetailViewModel.resetStates()
+            }
         }
         DeleteAlertDialog(
             openDialog = openDialog.value
         ) { executeAction ->
             openDialog.value = false
             if (executeAction) {
-                // TODO: delete place
+                vacationDetailViewModel.deletePlace(id = placeModel.id)
             }
         }
         VacationDetails(
@@ -88,7 +93,7 @@ fun VacationDetailsScreen(
             visited = visitedState.value,
         ) {
             visitedState.value = it
-            updatePlaceViewModel.updatePlace(id = placeModel.id, visited = it)
+            vacationDetailViewModel.updatePlace(id = placeModel.id, visited = it)
         }
     }
 }

@@ -5,6 +5,7 @@ import dev.esteban.places.data.datasource.local.PlaceLocalDataSource
 import dev.esteban.places.domain.repository.PlaceRepository
 import dev.esteban.places.domain.usecase.UpdatePlaceVisitedUseCase
 import dev.esteban.places.domain.usecase.VacationPlacesUseCase
+import dev.esteban.places.domain.usecase.DeleteVacationPlaceUseCase
 import dev.esteban.places.data.repository.PlaceRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.context.loadKoinModules
@@ -35,6 +36,7 @@ val utilsModule: Module = module {
 val useCaseModule: Module = module {
     factoryOf(::VacationPlacesUseCase)
     factoryOf(::UpdatePlaceVisitedUseCase)
+    factoryOf(::DeleteVacationPlaceUseCase)
 }
 
 val repositoryModule: Module = module {

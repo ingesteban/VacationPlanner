@@ -16,7 +16,8 @@ interface PlaceDao {
     suspend fun getAllPlaces(): List<PlaceEntity>
 
     @Query("Update Place SET visited=:visited WHERE id=:id")
-    suspend fun updatePlaceVisited(
-        id: Long, visited: Boolean
-    )
+    suspend fun updatePlaceVisited(id: Long, visited: Boolean)
+
+    @Query("Delete from Place WHERE id=:id")
+    suspend fun deletePlace(id: Long)
 }

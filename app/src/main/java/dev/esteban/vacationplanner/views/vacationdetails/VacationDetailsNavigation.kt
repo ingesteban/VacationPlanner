@@ -25,7 +25,9 @@ object VacationDetailsNavigation : ScreenNavigation {
     override fun Content(navController: NavController, navBackStackEntry: NavBackStackEntry) {
         val placeModel = navBackStackEntry.arguments?.getParcelable<PlaceModel>(PLACE_MODEL)
         placeModel?.let {
-            VacationDetailsScreen(placeModel = placeModel) {
+            VacationDetailsScreen(
+                placeModel = placeModel,
+            ) {
                 navController.popBackStack()
             }
         }

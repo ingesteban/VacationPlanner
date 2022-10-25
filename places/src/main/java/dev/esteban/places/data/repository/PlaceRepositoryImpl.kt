@@ -30,5 +30,10 @@ class PlaceRepositoryImpl(
     } catch (e: Exception) {
         throw e
     }
-}
 
+    override suspend fun deletePlace(id: Long) = try {
+        placeDao.deletePlace(id = id)
+    } catch (e: Exception) {
+        throw e
+    }
+}

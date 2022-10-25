@@ -1,6 +1,5 @@
 package dev.esteban.vacationplanner.views.vacationlist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,7 +31,7 @@ fun VacationListScreen(
     navigateToVacationDetails: (place: PlaceModel) -> Unit = {},
     navigateToCreateVacation: () -> Unit = {}
 ) {
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         vacationsViewModel.getVacationPlaces()
     }
     val state = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
