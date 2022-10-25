@@ -1,7 +1,9 @@
 package dev.esteban.vacationplanner.commons
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.util.Log
+import android.view.View.OnDragListener
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -22,10 +24,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.input.TextFieldValue
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
-import com.google.maps.android.compose.rememberMarkerState
+import com.google.maps.android.compose.*
+import dev.esteban.vacationplanner.R
 
 const val TAG = "commons"
 const val PROGRESS_BAR_TAG = "ProgressBarItem"
@@ -108,16 +108,20 @@ fun CheckBoxLabel(
 
 @Composable
 fun OutlinedTextCustom(
-    labelResource: Int, text: String, onTextChanged: (text: String) -> Unit
+    labelResource: Int,
+    text: String,
+    modifier: Modifier = Modifier,
+    onTextChanged: (text: String) -> Unit
 ) {
     val textFieldState = remember { mutableStateOf(TextFieldValue(text)) }
-    OutlinedTextField(label = {
-        Text(
-            text = stringResource(id = labelResource),
-            style = VacationPlannerTheme.typography.h5
-        )
-    },
-        modifier = Modifier
+    OutlinedTextField(
+        label = {
+            Text(
+                text = stringResource(id = labelResource),
+                style = VacationPlannerTheme.typography.h5
+            )
+        },
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 10.dp),
         value = textFieldState.value,
@@ -130,21 +134,54 @@ fun OutlinedTextCustom(
 @Composable
 fun Map(
     placeLocation: LatLng,
-    label: String,
-    zoom: Float = 10f
+    label: String = String(),
+    zoom: Float = 10f,
+    draggable: Boolean = false,
+    modifier: Modifier = Modifier,
+    dragListener: (latLng: LatLng) -> Unit = {}
 ) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(placeLocation, zoom)
     }
     val markerState = rememberMarkerState(position = placeLocation)
+
+    if (markerState.dragState == DragState.END) {
+        dragListener(markerState.position)
+    }
     GoogleMap(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(300.dp),
         cameraPositionState = cameraPositionState,
     ) {
         Marker(
-            state = markerState, title = label
+            state = markerState,
+            title = label,
+            draggable = draggable,
+        )
+    }
+}
+
+@Composable
+fun DefaultButton(
+    modifier: Modifier = Modifier,
+    background: Color,
+    stringResource: Int,
+    onClickAction: () -> Unit
+) {
+    Button(modifier = modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = background
+        ),
+        onClick = {
+            onClickAction()
+        }) {
+        Text(
+            text = stringResource(id = stringResource),
+            style = VacationPlannerTheme.typography.h5,
+            color = Color.White
         )
     }
 }

@@ -4,6 +4,7 @@
 
     <string name="title_vacation_places">Vacation Places</string>
     <string name="title_create_vacation">Create Vacation Place</string>
+    <string name="title_delete_place">Delete place</string>
 
     <string name="error_general">Oops something bad happens!</string>
     <string name="place_updated_success">The place was updated successful!</string>
@@ -16,5 +17,10 @@
     <string name="place_description">Description</string>
 
     <string name="place_visited">Visited ?</string>
+    <string name="place_pickup_location">Drag and drop the marker to pick up a location.</string>
+
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
+    <string name="description_delete_place">Are you sure to delete this place ?</string>
 
 </resources>

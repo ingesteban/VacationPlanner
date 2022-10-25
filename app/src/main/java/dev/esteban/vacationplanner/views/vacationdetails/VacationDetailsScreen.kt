@@ -12,6 +12,7 @@ import dev.esteban.vacationplanner.commons.Map
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
 import dev.esteban.common.utils.ScreenState
@@ -19,6 +20,7 @@ import dev.esteban.places.domain.model.PlaceModel
 import dev.esteban.vacationplanner.ui.theme.VacationPlannerTheme
 import dev.esteban.vacationplanner.R
 import dev.esteban.vacationplanner.commons.CheckBoxLabel
+import dev.esteban.vacationplanner.commons.DefaultButton
 import dev.esteban.vacationplanner.commons.SnackBarMessage
 import dev.esteban.vacationplanner.viewmodel.UpdatePlaceViewModel
 import org.koin.androidx.compose.getViewModel
@@ -30,43 +32,38 @@ fun VacationDetailsScreen(
     back: () -> Unit = {}
 ) {
     val visitedState = remember { mutableStateOf(placeModel.visited) }
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                elevation = 4.dp,
-                title = {
-                    Text(
-                        text = placeModel.label,
-                        style = VacationPlannerTheme.typography.h3,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        back()
-                    }) {
-                        Icon(Icons.Filled.ArrowBack, null)
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {
+    val openDialog = remember { mutableStateOf(false) }
 
-                    }) {
-                        Icon(
-                            Icons.Filled.Delete,
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                    }
-                },
-                backgroundColor = MaterialTheme.colors.primary,
-            )
-        }
-    ) {
+    Scaffold(topBar = {
+        TopAppBar(
+            elevation = 4.dp,
+            title = {
+                Text(
+                    text = placeModel.label,
+                    style = VacationPlannerTheme.typography.h3,
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = {
+                    back()
+                }) {
+                    Icon(Icons.Filled.ArrowBack, null)
+                }
+            },
+            actions = {
+                IconButton(onClick = {
+                    openDialog.value = true
+                }) {
+                    Icon(
+                        Icons.Filled.Delete, contentDescription = null, tint = Color.White
+                    )
+                }
+            },
+            backgroundColor = MaterialTheme.colors.primary,
+        )
+    }) {
         val uiState = updatePlaceViewModel.uiState
-        if (
-            uiState.screenState == ScreenState.Success ||
-            uiState.screenState == ScreenState.Error
-        ) {
+        if (uiState.screenState == ScreenState.Success || uiState.screenState == ScreenState.Error) {
             val message = if (uiState.placeWasUpdated) {
                 R.string.place_updated_success
             } else {
@@ -75,11 +72,17 @@ fun VacationDetailsScreen(
             }
 
             SnackBarMessage(
-                show = uiState.showMessage,
-                message = stringResource(id = message)
+                show = uiState.showMessage, message = stringResource(id = message)
             )
         }
-
+        DeleteAlertDialog(
+            openDialog = openDialog.value
+        ) { executeAction ->
+            openDialog.value = false
+            if (executeAction) {
+                // TODO: delete place
+            }
+        }
         VacationDetails(
             placeModel = placeModel,
             visited = visitedState.value,
@@ -92,9 +95,7 @@ fun VacationDetailsScreen(
 
 @Composable
 fun VacationDetails(
-    placeModel: PlaceModel,
-    visited: Boolean,
-    updateVisited: (visited: Boolean) -> Unit
+    placeModel: PlaceModel, visited: Boolean, updateVisited: (visited: Boolean) -> Unit
 ) {
     Column(modifier = Modifier.padding(all = 16.dp)) {
         Map(
@@ -102,13 +103,63 @@ fun VacationDetails(
             label = placeModel.label
         )
         Text(
-            text = placeModel.description,
-            style = VacationPlannerTheme.typography.h4
+            text = placeModel.description, style = VacationPlannerTheme.typography.h4
         )
         CheckBoxLabel(
             labelResource = R.string.label_have_you_visited_this_place,
             checked = visited,
             updateChecked = updateVisited
+        )
+    }
+}
+
+@Composable
+fun DeleteAlertDialog(
+    openDialog: Boolean,
+    onClickAction: (executeAction: Boolean) -> Unit
+) {
+    if (openDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                onClickAction(false)
+            },
+            title = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.title_delete_place),
+                    textAlign = TextAlign.Center,
+                    style = VacationPlannerTheme.typography.h1
+                )
+            },
+            text = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.description_delete_place),
+                    textAlign = TextAlign.Center,
+                    style = VacationPlannerTheme.typography.h5
+                )
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier.padding(all = 8.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    DefaultButton(
+                        modifier = Modifier.weight(1f),
+                        background = VacationPlannerTheme.color.gray100,
+                        stringResource = R.string.btn_no
+                    ) {
+                        onClickAction(false)
+                    }
+                    DefaultButton(
+                        modifier = Modifier.weight(1f),
+                        background = VacationPlannerTheme.color.purple500,
+                        stringResource = R.string.btn_yes
+                    ) {
+                        onClickAction(true)
+                    }
+                }
+            },
         )
     }
 }
