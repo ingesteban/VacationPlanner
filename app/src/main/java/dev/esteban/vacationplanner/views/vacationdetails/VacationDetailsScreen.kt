@@ -15,16 +15,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import dev.esteban.common.utils.ScreenState
 import dev.esteban.places.domain.model.PlaceModel
 import dev.esteban.vacationplanner.ui.theme.VacationPlannerTheme
 import dev.esteban.vacationplanner.R
+import dev.esteban.vacationplanner.commons.CheckBoxLabel
 import dev.esteban.vacationplanner.commons.SnackBarMessage
 import dev.esteban.vacationplanner.viewmodel.UpdatePlaceViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun VacationsDetailScreen(
+fun VacationDetailsScreen(
     updatePlaceViewModel: UpdatePlaceViewModel = getViewModel(),
     placeModel: PlaceModel,
     back: () -> Unit = {}
@@ -71,7 +71,7 @@ fun VacationsDetailScreen(
             message = stringResource(id = message)
         )
 
-        VacationDetail(description = placeModel.description, visited = visitedState.value) {
+        VacationDetails(description = placeModel.description, visited = visitedState.value) {
             visitedState.value = it
             updatePlaceViewModel.updatePlace(id = placeModel.id, visited = it)
         }
@@ -79,7 +79,7 @@ fun VacationsDetailScreen(
 }
 
 @Composable
-fun VacationDetail(
+fun VacationDetails(
     description: String,
     visited: Boolean,
     updateVisited: (visited: Boolean) -> Unit
@@ -89,25 +89,10 @@ fun VacationDetail(
             text = description,
             style = VacationPlannerTheme.typography.h4
         )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-        ) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(end = 30.dp),
-                text = stringResource(id = R.string.label_have_you_visited_this_place),
-                style = VacationPlannerTheme.typography.h5
-            )
-            Checkbox(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                checked = visited,
-                onCheckedChange = {
-                    updateVisited(it)
-                }
-            )
-        }
+        CheckBoxLabel(
+            labelResource = R.string.label_have_you_visited_this_place,
+            checked = visited,
+            updateChecked = updateVisited
+        )
     }
 }

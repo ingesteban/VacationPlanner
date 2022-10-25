@@ -26,7 +26,8 @@ import dev.esteban.vacationplanner.commons.SnackBarMessage
 @Composable
 fun VacationListScreen(
     vacationsViewModel: VacationsViewModel = getViewModel(),
-    navigateToPlace: (place: PlaceModel) -> Unit = {}
+    navigateToVacationDetails: (place: PlaceModel) -> Unit = {},
+    navigateToCreateVacation: () -> Unit = {}
 ) {
     LaunchedEffect(true) {
         vacationsViewModel.getVacationPlaces()
@@ -52,7 +53,7 @@ fun VacationListScreen(
                 uiState.screenState == ScreenState.Loading -> LoadingItem()
                 uiState.screenState == ScreenState.Success -> uiState.places?.let { places ->
                     PlacesList(places) { place ->
-                        navigateToPlace(place)
+                        navigateToVacationDetails(place)
                     }
                 }
                 else -> SnackBarMessage(
@@ -65,7 +66,7 @@ fun VacationListScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
-                onClick = { /*do something*/ }) {
+                onClick = { navigateToCreateVacation() }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = null,
