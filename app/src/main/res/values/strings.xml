@@ -12,10 +12,10 @@
     <string name="label_have_you_visited_this_place">Have you visited this place ?</string>
 
 
+    <string name="place_see_on_google_maps">See on google maps</string>
+
     <string name="place_label">Label</string>
-
     <string name="place_description">Description</string>
-
     <string name="place_visited">Visited ?</string>
     <string name="place_pickup_location">Drag and drop the marker to pick up a location.</string>
 

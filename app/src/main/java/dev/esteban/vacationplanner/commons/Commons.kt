@@ -165,7 +165,7 @@ fun Map(
 @Composable
 fun DefaultButton(
     modifier: Modifier = Modifier,
-    background: Color,
+    background: Color = VacationPlannerTheme.color.purple500,
     stringResource: Int,
     onClickAction: () -> Unit
 ) {

@@ -1,5 +1,8 @@
 package dev.esteban.vacationplanner.views.vacationdetails
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -8,12 +11,15 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import dev.esteban.vacationplanner.commons.Map
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.maps.model.LatLng
 import dev.esteban.common.utils.ScreenState
 import dev.esteban.places.domain.model.PlaceModel
@@ -100,13 +106,27 @@ fun VacationDetailsScreen(
 
 @Composable
 fun VacationDetails(
-    placeModel: PlaceModel, visited: Boolean, updateVisited: (visited: Boolean) -> Unit
+    placeModel: PlaceModel,
+    visited: Boolean,
+    context: Context = LocalContext.current,
+    updateVisited: (visited: Boolean) -> Unit
 ) {
     Column(modifier = Modifier.padding(all = 16.dp)) {
+
         Map(
             placeLocation = LatLng(placeModel.latLng[0], placeModel.latLng[1]),
             label = placeModel.label
         )
+        DefaultButton(
+            stringResource = R.string.place_see_on_google_maps
+        ) {
+            val gmmIntentUri = Uri.parse("google.streetview:cbll=${placeModel.latLng[0]},${placeModel.latLng[1]}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            mapIntent.resolveActivity(context.packageManager)?.let {
+                context.startActivity(mapIntent)
+            }
+        }
         Text(
             text = placeModel.description, style = VacationPlannerTheme.typography.h4
         )
@@ -158,7 +178,6 @@ fun DeleteAlertDialog(
                     }
                     DefaultButton(
                         modifier = Modifier.weight(1f),
-                        background = VacationPlannerTheme.color.purple500,
                         stringResource = R.string.btn_yes
                     ) {
                         onClickAction(true)
