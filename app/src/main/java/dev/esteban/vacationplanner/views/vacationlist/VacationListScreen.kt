@@ -22,6 +22,10 @@ import org.koin.androidx.compose.getViewModel
 import dev.esteban.vacationplanner.R
 import dev.esteban.vacationplanner.commons.LoadingItem
 import dev.esteban.vacationplanner.commons.SnackBarMessage
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter.All
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter.Visited
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter.Unvisited
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -87,9 +91,12 @@ fun VacationListScreen(
                     imageVector = Icons.Filled.Add, contentDescription = null, tint = Color.White
                 )
             }
-            ModalBottomSheetFilter(
-                state
-            )
+            ModalBottomSheetFilter(state) {
+                coroutineScope.launch {
+                    state.hide()
+                }
+                vacationsViewModel.filterPlaces(it)
+            }
         }
     }
 }
@@ -156,34 +163,39 @@ fun PlaceItem(
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun ModalBottomSheetFilter(
-    state: ModalBottomSheetState
+    state: ModalBottomSheetState,
+    onOptionSelected: (filter: VacationPlaceFilter) -> Unit
 ) {
     ModalBottomSheetLayout(
         sheetState = state,
         sheetContent = {
-            val radioOptions = listOf("All", "Visited", "Unvisited")
-            val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+            val radioOptions = listOf(All, Visited, Unvisited)
+            val selectedOption = remember { mutableStateOf(radioOptions[0]) }
             Column {
-                radioOptions.forEach { text ->
+                radioOptions.forEach { filter ->
                     Row(
                         Modifier
                             .fillMaxWidth()
                             .selectable(
-                                selected = (text == selectedOption),
+                                selected = (filter == selectedOption.value),
                                 onClick = {
-                                    onOptionSelected(text)
+                                    selectedOption.value = filter
+                                    onOptionSelected(filter)
                                 }
                             )
                             .padding(horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
-                            selected = (text == selectedOption),
-                            onClick = { onOptionSelected(text) },
+                            selected = (filter == selectedOption.value),
+                            onClick = {
+                                selectedOption.value = filter
+                                onOptionSelected(filter)
+                            },
                             colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colors.primary)
                         )
                         Text(
-                            text = text,
+                            text = filter.name,
                             style = VacationPlannerTheme.typography.h1,
                             modifier = Modifier
                                 .padding(start = 16.dp)

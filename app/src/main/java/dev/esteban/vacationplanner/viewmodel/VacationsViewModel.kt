@@ -11,8 +11,10 @@ import dev.esteban.common.utils.ScreenState
 import dev.esteban.common.utils.exceptionUnknown
 import dev.esteban.places.domain.model.PlaceModel
 import dev.esteban.places.domain.usecase.VacationPlacesUseCase
-import kotlinx.coroutines.CompletableJob
-import kotlinx.coroutines.Job
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter.All
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter.Visited
+import dev.esteban.vacationplanner.utils.VacationPlaceFilter.Unvisited
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -29,11 +31,13 @@ class VacationsViewModel(
         private const val TAG = "VacationsViewModel"
     }
 
+    private var originalPlaces = emptyList<PlaceModel>()
+
     var uiState by mutableStateOf(VacationsUiState(screenState = ScreenState.Empty))
         private set
 
     fun getVacationPlaces() {
-            viewModelScope.launch {
+        viewModelScope.launch {
             uiState = uiState.copy(screenState = ScreenState.Loading)
             when (val result = vacationPlacesUseCase(Unit)) {
                 is Result.Success -> handleVacationPlacesSuccess(result.data)
@@ -43,7 +47,17 @@ class VacationsViewModel(
         }
     }
 
+    fun filterPlaces(filter: VacationPlaceFilter) {
+        val places = when (filter) {
+            All -> originalPlaces
+            Visited -> originalPlaces.filter { !it.visited }
+            Unvisited -> originalPlaces.filter { it.visited }
+        }
+        uiState = uiState.copy(screenState = ScreenState.Success, places = places)
+    }
+
     private fun handleVacationPlacesSuccess(places: List<PlaceModel>) {
+        originalPlaces = places
         uiState = uiState.copy(screenState = ScreenState.Success, places = places)
     }
 
