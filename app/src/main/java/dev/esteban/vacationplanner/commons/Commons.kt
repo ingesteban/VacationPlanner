@@ -20,6 +20,12 @@ import dev.esteban.vacationplanner.ui.theme.VacationPlannerTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.input.TextFieldValue
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 
 const val TAG = "commons"
 const val PROGRESS_BAR_TAG = "ProgressBarItem"
@@ -39,12 +45,10 @@ fun SnackBarMessage(
         Box(
             modifier
                 .fillMaxSize()
-                .semantics { contentDescription = "error" }
-        ) {
+                .semantics { contentDescription = "error" }) {
             LaunchedEffect(Unit) {
                 val result = snackBarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = actionLabel
+                    message = message, actionLabel = actionLabel
                 )
                 when (result) {
                     SnackbarResult.ActionPerformed -> onClickAction()
@@ -52,9 +56,7 @@ fun SnackBarMessage(
                 }
             }
             SnackbarHost(
-                hostState = snackBarHostState,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
+                hostState = snackBarHostState, modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
     }
@@ -62,13 +64,11 @@ fun SnackBarMessage(
 
 @Composable
 fun LoadingItem(
-    color: Color = MaterialTheme.colors.primary,
-    modifier: Modifier = Modifier
+    color: Color = MaterialTheme.colors.primary, modifier: Modifier = Modifier
 ) {
     CircularProgressIndicator(
         color = color,
-        modifier =
-        modifier
+        modifier = modifier
             .testTag(PROGRESS_BAR_TAG)
             .fillMaxWidth()
             .padding(16.dp)
@@ -85,12 +85,10 @@ fun CheckBoxLabel(
     modifier: Modifier = Modifier,
     updateChecked: (checked: Boolean) -> Unit
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
-            .clickable { updateChecked(!checked) }
-    ) {
+    Box(modifier = modifier
+        .fillMaxWidth()
+        .padding(top = 8.dp)
+        .clickable { updateChecked(!checked) }) {
         Text(
             modifier = Modifier
                 .align(Alignment.CenterStart)
@@ -99,33 +97,26 @@ fun CheckBoxLabel(
             text = stringResource(id = labelResource),
             style = VacationPlannerTheme.typography.h5
         )
-        Checkbox(
-            modifier = Modifier
-                .align(Alignment.CenterEnd),
+        Checkbox(modifier = Modifier.align(Alignment.CenterEnd),
             checked = checked,
             colors = CheckboxDefaults.colors(MaterialTheme.colors.primary),
             onCheckedChange = {
                 updateChecked(it)
-            }
-        )
+            })
     }
 }
 
-
 @Composable
 fun OutlinedTextCustom(
-    labelResource: Int,
-    text: String,
-    onTextChanged: (text: String) -> Unit
+    labelResource: Int, text: String, onTextChanged: (text: String) -> Unit
 ) {
     val textFieldState = remember { mutableStateOf(TextFieldValue(text)) }
-    OutlinedTextField(
-        label = {
-            Text(
-                text = stringResource(id = labelResource),
-                style = VacationPlannerTheme.typography.h5
-            )
-        },
+    OutlinedTextField(label = {
+        Text(
+            text = stringResource(id = labelResource),
+            style = VacationPlannerTheme.typography.h5
+        )
+    },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 10.dp),
@@ -133,6 +124,27 @@ fun OutlinedTextCustom(
         onValueChange = {
             textFieldState.value = it
             onTextChanged(textFieldState.value.text)
-        }
-    )
+        })
+}
+
+@Composable
+fun Map(
+    placeLocation: LatLng,
+    label: String,
+    zoom: Float = 10f
+) {
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(placeLocation, zoom)
+    }
+    val markerState = rememberMarkerState(position = placeLocation)
+    GoogleMap(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp),
+        cameraPositionState = cameraPositionState,
+    ) {
+        Marker(
+            state = markerState, title = label
+        )
+    }
 }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 data class UpdatePlaceUiState(
+    val screenState: ScreenState = ScreenState.Empty,
     val showMessage: Boolean = false,
     val placeWasUpdated: Boolean = false,
 )
@@ -46,11 +47,19 @@ class UpdatePlaceViewModel(
     }
 
     private fun handleUpdatePlaceSuccess() {
-        uiState = uiState.copy(showMessage = true, placeWasUpdated = true)
+        uiState = uiState.copy(
+            screenState = ScreenState.Success,
+            showMessage = true,
+            placeWasUpdated = true
+        )
     }
 
     private fun handleVacationPlacesFailure(e: Exception) {
         Log.e(TAG, e.toString())
-        uiState = uiState.copy(showMessage = true, placeWasUpdated = false)
+        uiState = uiState.copy(
+            screenState = ScreenState.Error,
+            showMessage = true,
+            placeWasUpdated = false
+        )
     }
 }

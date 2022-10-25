@@ -1,6 +1,7 @@
 apply plugin: rootProject.ext.plugins.application
 apply plugin: rootProject.ext.plugins.kotlin
 apply plugin: rootProject.ext.plugins.kapt
+apply plugin: rootProject.ext.plugins.mapsplatform
 
 android {
     compileSdkVersion rootProject.ext.app.compileSdkVersion
@@ -68,6 +69,9 @@ dependencies {
     kapt rootProject.ext.libs.roomcompiler
 
     implementation rootProject.ext.libs.gson
+
+    implementation rootProject.ext.libs.mapscompose
+    implementation rootProject.ext.libs.servicesmaps
 
     testImplementation rootProject.ext.test.junit
     androidTestImplementation rootProject.ext.test.extJunit

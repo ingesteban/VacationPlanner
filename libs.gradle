@@ -21,6 +21,8 @@ ext {
                     'composeui'        : "1.2.1",
                     'gson'             : "2.9.1",
                     'room'             : "2.4.3",
+                    'mapscompose'      : "2.7.2",
+                    'servicesmaps'     : "18.1.0",
             ],
             'test'          : [
                     'junit'    : "4.13.2",
@@ -47,6 +49,8 @@ ext {
             'roomktx'             : "androidx.room:room-ktx:${versions.libs.room}",
             'roomtesting'         : "androidx.room:room-testing:${versions.libs.room}",
             'roomcompiler'        : "androidx.room:room-compiler:${versions.libs.room}",
+            'mapscompose'         : "com.google.maps.android:maps-compose:${versions.libs.mapscompose}",
+            'servicesmaps'        : "com.google.android.gms:play-services-maps:${versions.libs.servicesmaps}",
     ]
     main = [
             'androidplugin': "com.android.tools.build:gradle:${versions.androidplugin}",
@@ -73,6 +77,7 @@ ext {
             'kotlinandroid': "org.jetbrains.kotlin.android",
             'kapt'         : "kotlin-kapt",
             'parcelize'    : "kotlin-parcelize",
+            'mapsplatform' : "com.google.android.libraries.mapsplatform.secrets-gradle-plugin",
     ]
 
     modules = [
