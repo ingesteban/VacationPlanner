@@ -3,7 +3,6 @@ package dev.esteban.vacationplanner.views.vacationdetails
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import dev.esteban.places.domain.model.PlaceModel
 import dev.esteban.vacationplanner.navigation.ScreenNavigation
@@ -26,7 +25,7 @@ object VacationDetailsNavigation : ScreenNavigation {
     override fun Content(navController: NavController, navBackStackEntry: NavBackStackEntry) {
         val placeModel = navBackStackEntry.arguments?.getParcelable<PlaceModel>(PLACE_MODEL)
         placeModel?.let {
-            VacationsDetailScreen(placeModel = placeModel) {
+            VacationDetailsScreen(placeModel = placeModel) {
                 navController.popBackStack()
             }
         }

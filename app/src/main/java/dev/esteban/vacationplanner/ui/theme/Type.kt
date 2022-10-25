@@ -37,7 +37,7 @@ val h4Typography: TextStyle = TextStyle(
 
 val h5Typography: TextStyle = TextStyle(
     fontFamily = FontFamily.Default,
-    fontSize = 14.sp,
+    fontSize = 16.sp,
     fontWeight = FontWeight.Normal,
     color = Color.Black
 )
