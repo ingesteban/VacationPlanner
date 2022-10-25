@@ -2,6 +2,7 @@ package dev.esteban.places.data.repository
 
 import dev.esteban.places.data.datasource.local.PlaceLocalDataSource
 import dev.esteban.places.data.datasource.local.dao.PlaceDao
+import dev.esteban.places.data.datasource.local.model.PlaceEntity
 import dev.esteban.places.data.datasource.local.model.toEntity
 import dev.esteban.places.data.datasource.local.model.toModel
 import dev.esteban.places.domain.model.PlaceModel
@@ -36,4 +37,24 @@ class PlaceRepositoryImpl(
     } catch (e: Exception) {
         throw e
     }
+
+    override suspend fun createPlace(
+        label: String,
+        description: String,
+        visited: Boolean,
+        latLng: List<Double>
+    ) = try {
+        placeDao.createPlace(
+            PlaceEntity(
+                label = label,
+                description = description,
+                visited = visited,
+                lat = latLng[0],
+                lng = latLng[1],
+            )
+        )
+    } catch (e: Exception) {
+        throw e
+    }
+
 }

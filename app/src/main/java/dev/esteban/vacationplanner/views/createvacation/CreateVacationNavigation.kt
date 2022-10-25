@@ -11,7 +11,7 @@ object CreateVacationNavigation : ScreenNavigation {
 
     @Composable
     override fun Content(navController: NavController, navBackStackEntry: NavBackStackEntry) {
-        CreateVacationScreen() {
+        CreateVacationScreen {
             navController.popBackStack()
         }
     }

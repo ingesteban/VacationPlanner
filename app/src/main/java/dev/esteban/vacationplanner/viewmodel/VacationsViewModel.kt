@@ -32,10 +32,7 @@ class VacationsViewModel(
     var uiState by mutableStateOf(VacationsUiState(screenState = ScreenState.Empty))
         private set
 
-    // private var job: Job? = null
-
     fun getVacationPlaces() {
-        //job?.cancel()
             viewModelScope.launch {
             uiState = uiState.copy(screenState = ScreenState.Loading)
             when (val result = vacationPlacesUseCase(Unit)) {

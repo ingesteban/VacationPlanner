@@ -17,14 +17,18 @@ import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
+import dev.esteban.common.utils.ScreenState
 import dev.esteban.vacationplanner.R
-import dev.esteban.vacationplanner.commons.CheckBoxLabel
-import dev.esteban.vacationplanner.commons.OutlinedTextCustom
+import dev.esteban.vacationplanner.commons.*
 import dev.esteban.vacationplanner.ui.theme.VacationPlannerTheme
-import dev.esteban.vacationplanner.commons.Map
+import dev.esteban.vacationplanner.viewmodel.CreateVacationViewModel
+import dev.esteban.vacationplanner.viewmodel.VacationsViewModel
+import dev.esteban.vacationplanner.views.vacationlist.PlacesList
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun CreateVacationScreen(
+    createVacationViewModel: CreateVacationViewModel = getViewModel(),
     back: () -> Unit
 ) {
     val savedButtonIsEnable = remember { mutableStateOf(false) }
@@ -54,7 +58,12 @@ fun CreateVacationScreen(
                     IconButton(
                         enabled = savedButtonIsEnable.value,
                         onClick = {
-
+                            createVacationViewModel.createVacationPlace(
+                                label = labelState.value,
+                                description = descriptionState.value,
+                                visited = visitedState.value,
+                                latLng = latLngState.value,
+                            )
                         }
                     ) {
                         Icon(
@@ -72,6 +81,18 @@ fun CreateVacationScreen(
             )
         }
     ) {
+        val uiState = createVacationViewModel.uiState
+        when {
+            uiState.screenState == ScreenState.Loading -> LoadingItem()
+            uiState.screenState == ScreenState.Success -> {
+                back()
+                createVacationViewModel.resetStates()
+            }
+            else -> SnackBarMessage(
+                show = uiState.screenState == ScreenState.Error,
+                message = stringResource(id = R.string.error_general)
+            )
+        }
         CreateVacationPlaceForm(
             label = labelState.value,
             description = descriptionState.value,
@@ -140,7 +161,7 @@ fun CreateVacationPlaceForm(
             zoom = 4f,
             draggable = true
         ) {
-            updateLatLng(latLng)
+            updateLatLng(it)
         }
     }
 }

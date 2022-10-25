@@ -20,4 +20,7 @@ interface PlaceDao {
 
     @Query("Delete from Place WHERE id=:id")
     suspend fun deletePlace(id: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun createPlace(placeEntity: PlaceEntity)
 }

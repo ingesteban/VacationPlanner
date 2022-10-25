@@ -6,6 +6,7 @@ import dev.esteban.places.domain.repository.PlaceRepository
 import dev.esteban.places.domain.usecase.UpdatePlaceVisitedUseCase
 import dev.esteban.places.domain.usecase.VacationPlacesUseCase
 import dev.esteban.places.domain.usecase.DeleteVacationPlaceUseCase
+import dev.esteban.places.domain.usecase.CreateVacationPlaceUseCase
 import dev.esteban.places.data.repository.PlaceRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.context.loadKoinModules
@@ -37,6 +38,7 @@ val useCaseModule: Module = module {
     factoryOf(::VacationPlacesUseCase)
     factoryOf(::UpdatePlaceVisitedUseCase)
     factoryOf(::DeleteVacationPlaceUseCase)
+    factoryOf(::CreateVacationPlaceUseCase)
 }
 
 val repositoryModule: Module = module {
